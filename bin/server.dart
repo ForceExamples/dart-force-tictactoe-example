@@ -45,5 +45,6 @@ void main() {
   fs.start().then((_) {
     // Tell Force what the start page is!
     fs.server.static("/", "game.html");
+    fs.activateKeepAlive();
   });
 }
