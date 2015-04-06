@@ -14,7 +14,6 @@ void main() {
   
   var portEnv = Platform.environment['PORT'];
   var port = portEnv == null ? 8080 : int.parse(portEnv);
-  var serveClient = portEnv == null ? true : false;
       
   ForceServer fs = new ForceServer(host: "0.0.0.0", port: port, clientFiles: '../build/web/',
       keepAlive: true,

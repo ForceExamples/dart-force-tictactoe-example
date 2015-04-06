@@ -1,7 +1,7 @@
 name: forcetictactoe
 description: An example with dart force
 dependencies:
-  stagexl: '0.8.9'
+  stagexl: '0.11.0+1'
   force: 
     git: git://github.com/ForceUniverse/dart-force.git 
   
