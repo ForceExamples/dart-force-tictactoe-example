@@ -32,8 +32,12 @@ class GameReceiver {
     // String opponent = vme.json['opponent'];
     var uid = vme.json['gameId'];
     String opponent = vme.json['opponent'];
-    var x = vme.json['x'];
-    var y = vme.json['y'];
+    print(vme.json);
+    int x = vme.json['x'];
+    int y = vme.json['y'];
+    
+    Game game = games["$uid"];
+    game.play(vme.profile['name'], x, y);
     
     sender.sendToProfile('name', opponent, 'move', { 'gameId' : uid, 'x' : x, 'y' : y });
     
@@ -43,4 +47,11 @@ class GameReceiver {
 
 class Game {
   List<List> playlist=[ ['-','-','-'], ['-','-','-'], ['-','-','-'] ]; 
+  
+  String turn;
+  
+  bool play(String user, int x, int y) {
+    if (user==turn) playlist[x][y] = user;
+    return false;
+  }
 }

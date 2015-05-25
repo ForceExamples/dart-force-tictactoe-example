@@ -5,6 +5,8 @@ class BlockPaint extends DisplayObjectContainer {
   int color;
   bool alreadyDrawn = false;
   
+  bool locked = true;
+  
   StreamController<MouseEvent> _controller;
   
   BlockPaint(this.color) {
@@ -37,10 +39,12 @@ class BlockPaint extends DisplayObjectContainer {
   }
   
   void _onMouseClick(e) {
-    if (!alreadyDrawn) {
-      _controller.add(e);
+    if (!locked) {
+      if (!alreadyDrawn) {
+        _controller.add(e);
+      }
+      own();
     }
-    own();
   }
   
   Stream listen() => _controller.stream;

@@ -15,6 +15,8 @@ class Client {
   String opponent;
   List<List> playlist;
   
+  bool turn = false;
+  
   DivElement statusElement = querySelector('#status');
  
   ForceClient forceClient;
@@ -103,6 +105,8 @@ class Client {
       BlockPaint block = playlist[x][y];
       
       block.draw(Color.Blue);
+      
+      setLock(false);
     });
   }
 
@@ -156,6 +160,7 @@ class Client {
       color = Color.Blue;
       
       forceClient.send("start", request );
+      setLock(false);
     });
     emptyList.style.display = "none";
   }
@@ -201,10 +206,20 @@ class Client {
             };
           
             forceClient.send("play", request);
+            setLock(true);
         });
         stage.addChild(block);
       }
     } 
+  }
+  
+  void setLock(bool locking) {
+    for (int r = 0; r<3; r++) {
+        for (int c = 0; c<3; c++) {
+            BlockPaint block = playlist[r][c];
+            block.locked = locking;
+        }
+    }
   }
   
   void removePlayName(removedName) {

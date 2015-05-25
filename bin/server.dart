@@ -8,7 +8,7 @@ import 'package:force/force_common.dart';
 
 part 'game.dart';
 
-final Logger log = new Logger('ChatApp');
+final Logger log = new Logger('tictactoe');
 
 void main() {
   
