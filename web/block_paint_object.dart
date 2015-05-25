@@ -5,7 +5,16 @@ class BlockPaint extends DisplayObjectContainer {
   int color;
   bool alreadyDrawn = false;
   
-  bool locked = true;
+  bool _locked = true;
+  Bitmap _boxBitmap;
+  
+  set locked(bool locked) {
+    _locked = locked;
+    if (_boxBitmap!=null) {
+      _boxBitmap.alpha = (_locked?0.3:1);
+    }
+ 
+  }
   
   StreamController<MouseEvent> _controller;
   
@@ -24,8 +33,8 @@ class BlockPaint extends DisplayObjectContainer {
   
   void draw(int color) {
     if (!alreadyDrawn) {
-      var boxBitmap = _inner_draw(color);
-      addChild(boxBitmap);
+      _boxBitmap = _inner_draw(color);
+      addChild(_boxBitmap);
       alreadyDrawn = true;
     }
   }
@@ -39,7 +48,7 @@ class BlockPaint extends DisplayObjectContainer {
   }
   
   void _onMouseClick(e) {
-    if (!locked) {
+    if (!_locked) {
       if (!alreadyDrawn) {
         _controller.add(e);
       }

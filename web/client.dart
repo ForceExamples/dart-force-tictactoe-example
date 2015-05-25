@@ -15,8 +15,6 @@ class Client {
   String opponent;
   List<List> playlist;
   
-  bool turn = false;
-  
   DivElement statusElement = querySelector('#status');
  
   ForceClient forceClient;
@@ -39,7 +37,7 @@ class Client {
   
   Client() {
     print('start force client!');
-    forceClient = new ForceClient();
+    forceClient = new ForceClient(port: 8080);
     forceClient.connect();
     
     nameElement.onChange.listen((e) {
@@ -214,6 +212,11 @@ class Client {
   }
   
   void setLock(bool locking) {
+    if (!locking) {
+      setStatus("It is your turn !");
+    } else {
+      setStatus("$opponent 's turn ...");
+    }
     for (int r = 0; r<3; r++) {
         for (int c = 0; c<3; c++) {
             BlockPaint block = playlist[r][c];
