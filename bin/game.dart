@@ -14,9 +14,8 @@ class GameReceiver {
     String name = vme.json['opponent'];
     var uid = vme.json['gameId'];
     print("start game with $name");
-    String key = "$uid";
     
-    games[key] = new Game();
+    games["$uid"] = new Game(name, vme.profile['name']);
     
     sender.sendToProfile('name', name, 'start_game', { 'gameId' : uid, 'opponent' : vme.profile['name'] });
     
@@ -32,7 +31,6 @@ class GameReceiver {
     // String opponent = vme.json['opponent'];
     var uid = vme.json['gameId'];
     String opponent = vme.json['opponent'];
-    print(vme.json);
     int x = vme.json['x'];
     int y = vme.json['y'];
     
@@ -40,18 +38,43 @@ class GameReceiver {
     game.play(vme.profile['name'], x, y);
     
     sender.sendToProfile('name', opponent, 'move', { 'gameId' : uid, 'x' : x, 'y' : y });
-    
   }
   
 }
 
 class Game {
-  List<List> playlist=[ ['-','-','-'], ['-','-','-'], ['-','-','-'] ]; 
+  List<List> board=[ ['-','-','-'], ['-','-','-'], ['-','-','-'] ]; 
+  
+  Map users = new Map();
+  
+  Game(playerA, playerB) {
+    users[playerA] = "x";
+    users[playerB] = "O";
+  }
   
   String turn;
   
   bool play(String user, int x, int y) {
-    if (user==turn) playlist[x][y] = user;
-    return false;
+    if (user==turn) board[x][y] = users[user];
+    return hasWon(users[user], x, y);
+  }
+  
+  /** Return true if the player with "theSeed" has won after placing at
+         (rowSelected, colSelected) */
+  bool hasWon(theSeed, int rowSelected, int colSelected) {
+        return (board[rowSelected][0] == theSeed  // 3-in-the-row
+              && board[rowSelected][1] == theSeed
+              && board[rowSelected][2] == theSeed
+         || board[0][colSelected] == theSeed      // 3-in-the-column
+              && board[1][colSelected] == theSeed
+              && board[2][colSelected] == theSeed
+         || rowSelected == colSelected            // 3-in-the-diagonal
+              && board[0][0] == theSeed
+              && board[1][1] == theSeed
+              && board[2][2] == theSeed
+         || rowSelected + colSelected == 2  // 3-in-the-opposite-diagonal
+              && board[0][2] == theSeed
+              && board[1][1] == theSeed
+              && board[2][0] == theSeed);
   }
 }
