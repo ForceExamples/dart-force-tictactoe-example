@@ -35,9 +35,13 @@ class GameReceiver {
     int y = vme.json['y'];
     
     Game game = games["$uid"];
-    game.play(vme.profile['name'], x, y);
+    bool won = game.play(vme.profile['name'], x, y);
     
     sender.sendToProfile('name', opponent, 'move', { 'gameId' : uid, 'x' : x, 'y' : y });
+    if (won) {
+      sender.reply('won', { 'gameId' : uid });
+      sender.sendToProfile('name', opponent, 'lost', { 'gameId' : uid });
+    }
   }
   
 }

@@ -106,6 +106,14 @@ class Client {
       
       setLock(false);
     });
+    
+    forceClient.on("lost", (e, sender) {
+       setStatus("You lost!");
+    });
+    
+    forceClient.on("won", (e, sender) {
+       setStatus("YOU WON!");
+    });
   }
 
   void onConnected() {
